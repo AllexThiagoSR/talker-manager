@@ -1,16 +1,20 @@
 const { Router } = require('express');
-const talker = require('../models/talker.model');
+const talkerModel = require('../models/talker.model');
+const talkerMiddleware = require('../middlewares/talker.middlewares');
 
 const talkerRouter = Router();
 
 talkerRouter.get('/', async (_req, res) => {
-  const { status, result, message } = await talker.getAll();
-  return res.status(status).json(message ? { message } : result);
+  const { status, result } = await talkerModel.getAll();
+  return res.status(status).json(result);
 });
 
-talkerRouter.get('/:id', async (req, res) => {
+talkerRouter.get('/:id', talkerMiddleware.validateId, async (req, res) => {
   const { id } = req.params;
-  const talkerFound = await talker.getById(id);
+  const { status, result } = await talkerModel.getById(id);
+  return res.status(status).json(result);
 });
+
+talkerRouter.use(talkerMiddleware.handleError);
 
 module.exports = talkerRouter;
