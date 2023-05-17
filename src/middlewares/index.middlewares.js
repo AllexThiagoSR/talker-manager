@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { checkTalkProperties } = require('../utils/validateTalk');
 
 const addTalkerAuth = Router();
 const handleError = (error, _req, res, _next) => {
@@ -38,6 +39,27 @@ const validateAge = ({ body }, _res, next) => {
   return next();
 };
 
-addTalkerAuth.use(auth, validateName, validateAge);
+const validateTalk = ({ body }, _res, next) => {
+  const { talk } = body;
+  if (!talk) return next({ status: 400, message: 'O campo "talk" é obrigatório' });
+  if (typeof talk !== 'object') {
+    return next({
+      status: 400,
+      message: 'O campo "talk" deve ser um objeto com as chaves "watchedAt" e "rate"',
+    });
+  }
+  const talkIsValid = checkTalkProperties(talk);
+  if (talkIsValid) return next(talkIsValid);
+  return next();
+};
 
-module.exports = { addTalkerAuth, handleError, auth, validateName, validateAge };
+addTalkerAuth.use(auth, validateName, validateAge, validateTalk);
+
+module.exports = {
+  addTalkerAuth,
+  handleError,
+  auth,
+  validateName,
+  validateAge,
+  validateTalk,
+};
