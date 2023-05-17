@@ -15,6 +15,4 @@ talkerRouter.get('/:id', talkerMiddleware.validateId, async (req, res) => {
   return res.status(status).json(result);
 });
 
-talkerRouter.use(talkerMiddleware.handleError);
-
 module.exports = talkerRouter;
