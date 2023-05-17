@@ -5,7 +5,7 @@ const validateEmail = ({ body }, _res, next) => {
   if (!regex.test(email)) {
     return next({
       status: 400,
-      message: 'O "email" deve ter o formato deve ter o formato "email@email.com"',
+      message: 'O "email" deve ter o formato "email@email.com"',
     });
   }
   return next();
