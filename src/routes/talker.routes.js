@@ -8,4 +8,9 @@ talkerRouter.get('/', async (_req, res) => {
   return res.status(status).json(message ? { message } : result);
 });
 
+talkerRouter.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const talkerFound = await talker.getById(id);
+});
+
 module.exports = talkerRouter;

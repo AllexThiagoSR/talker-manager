@@ -9,4 +9,11 @@ const getAll = async () => {
   }
 };
 
-module.exports = { getAll };
+const getById = async (talkerId) => {
+  const { status, message, result } = await getAll();
+  if (message) return { status, message };
+  const talker = result.find(({ id }) => id === Number(talkerId));
+  return talker ? { status: 200, result: talker }
+};
+
+module.exports = { getAll, getById };
