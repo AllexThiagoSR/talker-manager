@@ -3,6 +3,7 @@ const talkerModel = require('../models/talker.model');
 const talkerMiddleware = require('../middlewares/talker.middlewares');
 const indexMiddlewares = require('../middlewares/index.middlewares');
 const { rateIsvalid } = require('../utils/validateTalk');
+const talkerDBRouter = require('./talkerDB.routes');
 
 const talkerRouter = Router();
 
@@ -18,6 +19,8 @@ talkerRouter.get('/search',
     const { status, result } = await talkerModel.search(req.query);
     return res.status(status).json(result);
   });
+
+talkerRouter.use('/db', talkerDBRouter);
 
 talkerRouter.get('/:id', talkerMiddleware.validateId, async (req, res) => {
   const { id } = req.params;
