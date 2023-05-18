@@ -1,4 +1,5 @@
 const fs = require('fs/promises');
+const writeInfile = require('../utils/writeInFile');
 
 const getAll = async () => {
   try {
@@ -27,11 +28,21 @@ const create = async ({ name, age, talk }) => {
     id: nextId,
     talk,
   };
-  await fs.writeFile('src/talker.json', JSON.stringify([
+  await writeInfile([
     ...result,
     newTalker,
-  ], null, 2));
+  ]);
   return newTalker;
 };
 
-module.exports = { getAll, getById, create };
+const uptade = async (id, payload) => {
+  const { result } = await getAll();
+  const updatedTalker = {
+    ...result.find((talker) => talker.id === Number(id)),
+    ...payload,
+  };
+  
+  return updatedTalker;
+};
+
+module.exports = { getAll, getById, create, uptade };
