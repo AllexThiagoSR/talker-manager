@@ -28,21 +28,20 @@ const create = async ({ name, age, talk }) => {
     id: nextId,
     talk,
   };
-  await writeInfile([
-    ...result,
-    newTalker,
-  ]);
+  await writeInfile([...result, newTalker]);
   return newTalker;
 };
 
 const uptade = async (id, payload) => {
   const { result } = await getAll();
-  const updatedTalker = {
-    ...result.find((talker) => talker.id === Number(id)),
-    ...payload,
-  };
-  
-  return updatedTalker;
+  const talkerToUpdate = result.find((talker) => talker.id === Number(id));
+  if (!talkerToUpdate) {
+    return { status: 404, result: { message: 'Pessoa palestrante não encontrada' } };
+  }
+  const updatedTalker = { ...talkerToUpdate, ...payload };
+  const newTalkers = result.map((talker) => (talker.id === Number(id) ? updatedTalker : talker));
+  await writeInfile(newTalkers);
+  return { status: 200, result: updatedTalker };
 };
 
 module.exports = { getAll, getById, create, uptade };

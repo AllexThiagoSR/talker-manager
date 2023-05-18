@@ -10,7 +10,6 @@ const handleError = (error, _req, res, _next) => {
 
 const auth = ({ headers }, _res, next) => {
   const { authorization } = headers;
-  console.log(authorization, typeof authorization);
   const authString = `${authorization}`;
   if (!authorization) {
     return next({ status: 401, message: 'Token não encontrado' });
