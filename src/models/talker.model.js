@@ -44,4 +44,14 @@ const uptade = async (id, payload) => {
   return { status: 200, result: updatedTalker };
 };
 
-module.exports = { getAll, getById, create, uptade };
+const deleteTalker = async (id) => {
+  const { result } = await getAll();
+  const newTalkers = result.filter((talker) => talker.id !== Number(id));
+  if (result.length <= newTalkers.length) {
+    return { status: 404, result: { message: 'Pessoa palestrante não encontrada' } };
+  }
+  await writeInfile(newTalkers);
+  return { status: 204 };
+};
+
+module.exports = { getAll, getById, create, uptade, deleteTalker };

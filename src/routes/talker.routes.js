@@ -21,11 +21,22 @@ talkerRouter.post('/', indexMiddlewares.talkerAuth, async (req, res) => {
   return res.status(201).json(newTalker);
 });
 
-talkerRouter
-  .put('/:id', talkerMiddleware.validateId, indexMiddlewares.talkerAuth, async (req, res) => {
-  const { id } = req.params;
-  const { status, result } = await talkerModel.uptade(id, req.body);
-  return res.status(status).json(result);
-});
+talkerRouter.put('/:id',
+  talkerMiddleware.validateId,
+  indexMiddlewares.talkerAuth,
+  async (req, res) => {
+    const { id } = req.params;
+    const { status, result } = await talkerModel.uptade(id, req.body);
+    return res.status(status).json(result);
+  });
+
+talkerRouter.delete('/:id',
+  talkerMiddleware.validateId,
+  indexMiddlewares.auth,
+  async (req, res) => {
+    const { id } = req.params;
+    const { status, result } = await talkerModel.deleteTalker(id);
+    return res.status(status).json(result);
+  });
 
 module.exports = talkerRouter;
