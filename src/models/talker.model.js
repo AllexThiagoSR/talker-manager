@@ -19,18 +19,17 @@ const getById = async (talkerId) => {
     : { status: 404, result: { message: 'Pessoa palestrante não encontrada' } };
 };
 
-const search = async ({ q, date, rate }) => {
-  const searchTerms = Object.entries({ name: q, watchedAt: date });
+const search = async ({ rate, q, date }) => {
   const { status, result } = await getAll();
   try {
-    const filteredByQuery = result.filter((talker) => {
-      const fitInSearchTerms = searchTerms
-        .every(([key, value]) => talker[key].includes(value || ''));
-      const rateFitSearchTerm = (!rate ? true : talker.rate === Number(rate));
+    const filteredByQuery = result.filter(({ name: talkerName, talk }) => {
+      const fitInSearchTerms = talkerName.includes(q) && talk.watchedAt.includes(date);
+      const rateFitSearchTerm = (!rate ? true : talk.rate === Number(rate));
       return fitInSearchTerms && rateFitSearchTerm;
     });
     return { status, result: filteredByQuery };
   } catch (error) {
+    console.log(error.message);
     return { status, result };
   }
 };

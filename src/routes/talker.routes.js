@@ -12,6 +12,9 @@ talkerRouter.get('/', async (_req, res) => {
 
 talkerRouter.get('/search',
   indexMiddlewares.auth,
+  talkerMiddleware.validateSearchTermRate,
+  talkerMiddleware.validateSearchTermName,
+  talkerMiddleware.validateSearchTermDate,
   async (req, res) => {
     const { status, result } = await talkerModel.search(req.query);
     return res.status(status).json(result);
