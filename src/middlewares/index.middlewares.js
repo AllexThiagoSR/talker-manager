@@ -9,12 +9,12 @@ const handleError = (error, _req, res, _next) => {
 
 const auth = ({ headers }, _res, next) => {
   const { authorization } = headers;
-  console.log(typeof authorization);
-  console.log(authorization);
-  if (!authorization || authorization === 'undefined') {
+  console.log(authorization, typeof authorization);
+  const authString = `${authorization}`;
+  if (!authorization) {
     return next({ status: 401, message: 'Token não encontrado' });
   }
-  if (typeof authorization !== 'string' && authorization.length !== 16) {
+  if (authString.length !== 16) {
     return next({ status: 401, message: 'Token inválido' });
   }
   return next();

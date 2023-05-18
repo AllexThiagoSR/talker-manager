@@ -10,7 +10,6 @@ indexRouter.use('/talker', talkerRouter);
 
 indexRouter.post('/login', login.validateEmail, login.validatePassword, (_, res) => {
   const token = generateToken();
-  console.log(token.length);
   return res.status(200).json({ token });
 });
 

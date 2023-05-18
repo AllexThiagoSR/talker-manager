@@ -20,7 +20,6 @@ const checkTalkProperties = ({ watchedAt, rate }) => {
   if (!watchedAt) return { status: 400, message: 'O campo "watchedAt" é obrigatório' };
   const watchedIsValid = watchedAtIsValid(watchedAt);
   if (watchedIsValid) return watchedIsValid;
-  
   const rateValid = rateIsvalid(rate);
   if (rateValid) return rateValid;
 };
