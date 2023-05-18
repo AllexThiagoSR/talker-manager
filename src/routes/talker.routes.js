@@ -16,8 +16,9 @@ talkerRouter.get('/:id', talkerMiddleware.validateId, async (req, res) => {
   return res.status(status).json(result);
 });
 
-talkerRouter.post('/',
-  indexMiddlewares.addTalkerAuth,
-  async (req, res) => res.status(201).json({ message: 'Foi criado viu, confia' }));
+talkerRouter.post('/', indexMiddlewares.addTalkerAuth, async (req, res) => {
+  const newTalker = await talkerModel.create(req.body);
+  return res.status(201).json(newTalker);
+});
 
 module.exports = talkerRouter;

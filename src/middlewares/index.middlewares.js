@@ -9,10 +9,12 @@ const handleError = (error, _req, res, _next) => {
 
 const auth = ({ headers }, _res, next) => {
   const { authorization } = headers;
-  const authToken = JSON.parse(authorization);
-  console.log(authToken);
-  if (!authToken) return next({ status: 401, message: 'Token não encontrado' });
-  if (typeof authToken !== 'string' && authToken.length !== 16) {
+  console.log(typeof authorization);
+  console.log(authorization);
+  if (!authorization || authorization === 'undefined') {
+    return next({ status: 401, message: 'Token não encontrado' });
+  }
+  if (typeof authorization !== 'string' && authorization.length !== 16) {
     return next({ status: 401, message: 'Token inválido' });
   }
   return next();
@@ -20,7 +22,7 @@ const auth = ({ headers }, _res, next) => {
 
 const validateName = ({ body }, _res, next) => {
   const { name } = body;
-  if (!name) return next({ status: 400, message: 'O campo "name" é orbigatório' });
+  if (!name) return next({ status: 400, message: 'O campo "name" é obrigatório' });
   if (name.length < 3) {
     return next({ status: 400, message: 'O "name" deve ter pelo menos 3 caracteres' });
   }

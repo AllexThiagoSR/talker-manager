@@ -18,4 +18,20 @@ const getById = async (talkerId) => {
     : { status: 404, result: { message: 'Pessoa palestrante não encontrada' } };
 };
 
-module.exports = { getAll, getById };
+const create = async ({ name, age, talk }) => {
+  const { result } = await getAll();
+  const nextId = result[result.length - 1].id + 1;
+  const newTalker = {
+    name,
+    age,
+    id: nextId,
+    talk,
+  };
+  await fs.writeFile('src/talker.json', JSON.stringify([
+    ...result,
+    newTalker,
+  ], null, 2));
+  return newTalker;
+};
+
+module.exports = { getAll, getById, create };
