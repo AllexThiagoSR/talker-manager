@@ -1,11 +1,11 @@
 const { Router } = require('express');
-const connection = require('../db/connection');
+const talkerDBModel = require('../models/talkerDB.model');
 
 const talkerDBRouter = Router();
 
 talkerDBRouter.get('/', async (_req, res) => {
-  const talkers = await connection.execute('SELECT * FROM talkers');
-  return res.status(200).json(talkers[0]);
+  const talkers = await talkerDBModel.getAll();
+  return res.status(200).json(talkers);
 });
 
 module.exports = talkerDBRouter;
