@@ -29,7 +29,6 @@ const search = async ({ rate, q, date }) => {
     });
     return { status, result: filteredByQuery };
   } catch (error) {
-    console.log(error.message);
     return { status, result };
   }
 };
@@ -69,4 +68,18 @@ const deleteTalker = async (id) => {
   return { status: 204 };
 };
 
-module.exports = { getAll, getById, create, uptade, deleteTalker, search };
+const patch = async (id, rate) => {
+  const { result } = await getAll();
+  const { result: { message }, status } = await getById(id);
+  if (message) return { status, message }; 
+  const newTalkers = result.map((talker) => {
+    const { talk } = talker;
+    return Number(id) === talker.id ? {
+        ...talker, talk: { ...talk, rate: Number(rate) },
+      } : talker;
+  });
+  await writeInfile(newTalkers);
+  return { status: 204 };
+};
+
+module.exports = { getAll, getById, create, uptade, deleteTalker, search, patch };

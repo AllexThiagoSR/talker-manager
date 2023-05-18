@@ -2,6 +2,7 @@ const { Router } = require('express');
 const talkerModel = require('../models/talker.model');
 const talkerMiddleware = require('../middlewares/talker.middlewares');
 const indexMiddlewares = require('../middlewares/index.middlewares');
+const { rateIsvalid } = require('../utils/validateTalk');
 
 const talkerRouter = Router();
 
@@ -37,6 +38,18 @@ talkerRouter.put('/:id',
     const { status, result } = await talkerModel.uptade(id, req.body);
     return res.status(status).json(result);
   });
+
+talkerRouter.patch('/rate/:id',
+talkerMiddleware.validateId,
+indexMiddlewares.auth,
+ async ({ params, body }, res) => {
+  const isInvalid = rateIsvalid(body.rate);
+  if (!isInvalid) {
+    const { status, message } = await talkerModel.patch(params.id, body.rate);
+    return res.status(status).json({ message });
+  }
+  return res.status(isInvalid.status).json({ message: isInvalid.message });
+});
 
 talkerRouter.delete('/:id',
   talkerMiddleware.validateId,

@@ -24,4 +24,4 @@ const checkTalkProperties = ({ watchedAt, rate }) => {
   if (rateValid) return rateValid;
 };
 
-module.exports = { checkTalkProperties };
+module.exports = { checkTalkProperties, rateIsvalid };
