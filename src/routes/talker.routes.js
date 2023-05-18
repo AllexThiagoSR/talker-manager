@@ -16,9 +16,15 @@ talkerRouter.get('/:id', talkerMiddleware.validateId, async (req, res) => {
   return res.status(status).json(result);
 });
 
-talkerRouter.post('/', indexMiddlewares.addTalkerAuth, async (req, res) => {
+talkerRouter.post('/', indexMiddlewares.talkerAuth, async (req, res) => {
   const newTalker = await talkerModel.create(req.body);
   return res.status(201).json(newTalker);
+});
+
+talkerRouter.put('/:id', indexMiddlewares.talkerAuth, async (req, res) => {
+  const { id } = req.params;
+  const updatedTalker = await talkerModel.update(id, req.body);
+  return res.status(200).json(updatedTalker);
 });
 
 module.exports = talkerRouter;

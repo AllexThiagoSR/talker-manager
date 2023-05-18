@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { checkTalkProperties } = require('../utils/validateTalk');
 
-const addTalkerAuth = Router();
+const talkerAuth = Router();
 
 const handleError = (error, _req, res, _next) => {
   const { status, message } = error;
@@ -56,10 +56,10 @@ const validateTalk = ({ body }, _res, next) => {
   return next();
 };
 
-addTalkerAuth.use(auth, validateName, validateAge, validateTalk);
+talkerAuth.use(auth, validateName, validateAge, validateTalk);
 
 module.exports = {
-  addTalkerAuth,
+  talkerAuth,
   handleError,
   auth,
   validateName,
