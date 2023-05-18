@@ -1,4 +1,7 @@
-// const { Route } = require('express');
+const { Router } = require('express');
+
+const validateQueries = Router();
+
 const validateId = ({ params: { id } }, _res, next) => {
   const numberId = Number(id);
   if (Number.isInteger(numberId) && !Number.isNaN(numberId)) return next();
@@ -31,11 +34,12 @@ const validateSearchTermDate = (req, _res, next) => {
   return next();
 };
 
-// validateQueries.use(validateSearchTermRate, validateSearchTermName, validateSearchTermDate);
+validateQueries.use(validateSearchTermRate, validateSearchTermName, validateSearchTermDate);
 
 module.exports = {
   validateId,
   validateSearchTermRate,
   validateSearchTermName,
   validateSearchTermDate,
+  validateQueries,
 };
