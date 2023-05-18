@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { checkTalkProperties } = require('../utils/validateTalk');
 
 const addTalkerAuth = Router();
+
 const handleError = (error, _req, res, _next) => {
   const { status, message } = error;
   return res.status(status).json({ message });
