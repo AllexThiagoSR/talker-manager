@@ -19,6 +19,16 @@ const getById = async (talkerId) => {
     : { status: 404, result: { message: 'Pessoa palestrante não encontrada' } };
 };
 
+const search = async ({ q }) => {
+  const { status, result } = await getAll();
+  try {
+    const filteredByQuery = result.filter(({ name }) => name.includes(q || ''));
+    return { status, result: filteredByQuery };
+  } catch (error) {
+    return { status, result };
+  }
+};
+
 const create = async ({ name, age, talk }) => {
   const { result } = await getAll();
   const nextId = result[result.length - 1].id + 1;
@@ -54,4 +64,4 @@ const deleteTalker = async (id) => {
   return { status: 204 };
 };
 
-module.exports = { getAll, getById, create, uptade, deleteTalker };
+module.exports = { getAll, getById, create, uptade, deleteTalker, search };

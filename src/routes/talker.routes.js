@@ -10,6 +10,13 @@ talkerRouter.get('/', async (_req, res) => {
   return res.status(status).json(result);
 });
 
+talkerRouter.get('/search',
+  indexMiddlewares.auth,
+  async (req, res) => {
+    const { status, result } = await talkerModel.search(req.query);
+    return res.status(status).json(result);
+  });
+
 talkerRouter.get('/:id', talkerMiddleware.validateId, async (req, res) => {
   const { id } = req.params;
   const { status, result } = await talkerModel.getById(id);
